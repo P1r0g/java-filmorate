@@ -1,13 +1,107 @@
 package ru.yandex.practicum.filmorate;
 
+import ru.yandex.practicum.filmorate.controller.FilmController;
+import ru.yandex.practicum.filmorate.controller.UserController;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
+import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.User;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class FilmorateApplicationTests {
+import java.time.LocalDate;
 
-	@Test
-	void contextLoads() {
+import static org.junit.jupiter.api.Assertions.*;
+
+public class FilmorateApplicationTests {
+
+	private FilmController filmController;
+	private UserController userController;
+
+	@BeforeEach
+	public void setUp() {
+		filmController = new FilmController();
+		userController = new UserController();
 	}
 
+	@Test
+	public void testValidFilm() {
+		Film film = new Film();
+		film.setName("Inception");
+		film.setDescription("A mind-bending thriller");
+		film.setReleaseDate(LocalDate.of(2010, 7, 16));
+		film.setDuration(148);
+
+		assertDoesNotThrow(() -> filmController.addFilm(film));
+	}
+
+	@Test
+	public void testInvalidFilmName() {
+		Film film = new Film();
+		film.setName("");
+		film.setDescription("A mind-bending thriller");
+		film.setReleaseDate(LocalDate.of(2010, 7, 16));
+		film.setDuration(148);
+
+		ValidationException exception = assertThrows(ValidationException.class, () -> filmController.addFilm(film));
+		assertEquals("Film name cannot be empty", exception.getMessage());
+	}
+
+	@Test
+	public void testInvalidFilmReleaseDate() {
+		Film film = new Film();
+		film.setName("Inception");
+		film.setDescription("A mind-bending thriller");
+		film.setReleaseDate(LocalDate.of(1890, 1, 1));
+		film.setDuration(148);
+
+		ValidationException exception = assertThrows(ValidationException.class, () -> filmController.addFilm(film));
+		assertEquals("Release date cannot be before December 28, 1895", exception.getMessage());
+	}
+
+	@Test
+	public void testValidUser() {
+		User user = new User();
+		user.setEmail("user@example.com");
+		user.setLogin("user123");
+		user.setName("User Name");
+		user.setBirthday(LocalDate.of(1990, 1, 1));
+
+		assertDoesNotThrow(() -> userController.createUser(user));
+	}
+
+	@Test
+	public void testInvalidUserEmail() {
+		User user = new User();
+		user.setEmail("userexample.com");
+		user.setLogin("user123");
+		user.setName("User Name");
+		user.setBirthday(LocalDate.of(1990, 1, 1));
+
+		ValidationException exception = assertThrows(ValidationException.class, () -> userController.createUser(user));
+		assertEquals("Email must not be empty and must contain '@'", exception.getMessage());
+	}
+
+	@Test
+	public void testInvalidUserLogin() {
+		User user = new User();
+		user.setEmail("user@example.com");
+		user.setLogin("user 123");
+		user.setName("User Name");
+		user.setBirthday(LocalDate.of(1990, 1, 1));
+
+		ValidationException exception = assertThrows(ValidationException.class, () -> userController.createUser(user));
+		assertEquals("Login must not be empty and must not contain spaces", exception.getMessage());
+	}
+
+	@Test
+	public void testInvalidUserBirthday() {
+		User user = new User();
+		user.setEmail("user@example.com");
+		user.setLogin("user123");
+		user.setName("User Name");
+		user.setBirthday(LocalDate.now().plusDays(1));
+
+		ValidationException exception = assertThrows(ValidationException.class, () -> userController.createUser(user));
+		assertEquals("Birthday cannot be in the future", exception.getMessage());
+	}
 }
