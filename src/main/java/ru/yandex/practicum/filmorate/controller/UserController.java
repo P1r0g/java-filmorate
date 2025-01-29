@@ -42,14 +42,14 @@ public class UserController {
         if (!users.containsKey(user.getId())) {
             throw new NotFoundException("Пост с id = " + user.getId() + " не найден");
         }
-        User oldUser = users.get(user.getId());
+        User updatedUser = users.get(user.getId());
         validateUser(user);
-        // если пользователь найден и все условия соблюдены, обновляем её содержимое
-        oldUser.setName(user.getName());
-        oldUser.setBirthday(user.getBirthday());
-        oldUser.setLogin(user.getLogin());
-        oldUser.setEmail(user.getEmail());
-        return oldUser;
+        updatedUser.setName(user.getName());
+        updatedUser.setBirthday(user.getBirthday());
+        updatedUser.setLogin(user.getLogin());
+        updatedUser.setEmail(user.getEmail());
+        users.put(updatedUser.getId(), updatedUser);
+        return updatedUser;
 
     }
 
@@ -63,7 +63,7 @@ public class UserController {
         if (user.getName() == null || user.getName().isBlank()) {
             user.setName(user.getLogin());
         }
-        if (user.getBirthday().isAfter(LocalDate.now())) {
+        if (user.getBirthday() == null || user.getBirthday().isAfter(LocalDate.now())) {
             throw new ValidationException("дата рождения не может быть в будущем");
         }
     }
