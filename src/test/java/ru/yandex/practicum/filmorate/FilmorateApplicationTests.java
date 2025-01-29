@@ -43,7 +43,7 @@ public class FilmorateApplicationTests {
 		film.setDuration(148);
 
 		ValidationException exception = assertThrows(ValidationException.class, () -> filmController.addFilm(film));
-		assertEquals("Film name cannot be empty", exception.getMessage());
+		assertEquals("Название фильма не может быть пустым", exception.getMessage());
 	}
 
 	@Test
@@ -55,7 +55,7 @@ public class FilmorateApplicationTests {
 		film.setDuration(148);
 
 		ValidationException exception = assertThrows(ValidationException.class, () -> filmController.addFilm(film));
-		assertEquals("Release date cannot be before December 28, 1895", exception.getMessage());
+		assertEquals("дата релиза — не раньше 28 декабря 1895 года;", exception.getMessage());
 	}
 
 	@Test
@@ -78,7 +78,7 @@ public class FilmorateApplicationTests {
 		user.setBirthday(LocalDate.of(1990, 1, 1));
 
 		ValidationException exception = assertThrows(ValidationException.class, () -> userController.createUser(user));
-		assertEquals("Email must not be empty and must contain '@'", exception.getMessage());
+		assertEquals("электронная почта не может быть пустой и должна содержать символ @", exception.getMessage());
 	}
 
 	@Test
@@ -90,7 +90,7 @@ public class FilmorateApplicationTests {
 		user.setBirthday(LocalDate.of(1990, 1, 1));
 
 		ValidationException exception = assertThrows(ValidationException.class, () -> userController.createUser(user));
-		assertEquals("Login must not be empty and must not contain spaces", exception.getMessage());
+		assertEquals("логин не может быть пустым и содержать пробелы", exception.getMessage());
 	}
 
 	@Test
@@ -102,6 +102,6 @@ public class FilmorateApplicationTests {
 		user.setBirthday(LocalDate.now().plusDays(1));
 
 		ValidationException exception = assertThrows(ValidationException.class, () -> userController.createUser(user));
-		assertEquals("Birthday cannot be in the future", exception.getMessage());
+		assertEquals("дата рождения не может быть в будущем", exception.getMessage());
 	}
 }
