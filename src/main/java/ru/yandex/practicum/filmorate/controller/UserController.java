@@ -15,6 +15,7 @@ import java.util.*;
 public class UserController {
 
     private final Map<Long, User> users = new HashMap<>();
+
     @GetMapping
     public Collection<User> findAllUsers() {
         log.info("GET /user");
@@ -67,7 +68,6 @@ public class UserController {
         }
     }
 
-    // вспомогательный метод для генерации идентификатора нового поста
     private long getNextId() {
         long currentMaxId = users.keySet().stream().mapToLong(id -> id).max().orElse(0);
         return ++currentMaxId;
