@@ -17,4 +17,10 @@ public class FilmDto {
     private int likesCount;
     private MpaRating mpa;
     private List<Genre> genres;
+    public void addLike() {
+        this.likesCount++;
+    }
+    public void removeLike() {
+        this.likesCount--;
+    }
 }

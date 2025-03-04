@@ -7,6 +7,8 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import ru.yandex.practicum.filmorate.dto.FilmDto;
+import ru.yandex.practicum.filmorate.dto.UserDto;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.User;
@@ -47,7 +49,7 @@ public class FilmDbStorage implements FilmStorage {
     }
 
     @Override
-    public Optional<Film> findById(long id) {
+    public Optional<Film> findById(Long id) {
         try {
             String sqlQuery = "SELECT fi.*, (SELECT COUNT(film_id) FROM \"user_films\" WHERE film_id = fi.id)" +
                     " AS likes_count, mpa.name AS mpa_name, mpa.id AS mpa_id, gen.name AS genre_name, gen.id AS genre_id" +
@@ -121,7 +123,7 @@ public class FilmDbStorage implements FilmStorage {
     }
 
     @Override
-    public void addLike(Film film, User user) {
+    public void addLike(FilmDto film, User user) {
         String checkQuery = "SELECT count(film_id) FROM \"user_films\" WHERE user_id = ? AND film_id = ?";
         Integer result = jdbcTemplate.queryForObject(checkQuery, Integer.class, user.getId(), film.getId());
         if (result == null || result == 0) {
@@ -134,7 +136,7 @@ public class FilmDbStorage implements FilmStorage {
     }
 
     @Override
-    public boolean removeLike(Film film, User user) {
+    public boolean removeLike(FilmDto film, User user) {
         String sqlQuery = "DELETE FROM \"user_films\" WHERE user_id = ? AND film_id = ?";
         return jdbcTemplate.update(sqlQuery, user.getId(), film.getId()) > 0;
     }

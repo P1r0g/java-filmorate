@@ -28,7 +28,7 @@ public class FilmController {
 
     @GetMapping("/{filmId}")
     public FilmDto getFilmById(@PathVariable Long filmId) {
-        return FilmMapper.mapToFilmDto(filmService.findById(filmId));
+        return filmService.findById(filmId);
     }
 
     @PutMapping("/{id}/like/{userId}")
