@@ -24,7 +24,7 @@ public class MpaController {
     }
 
     @GetMapping("/{mpaId}")
-    public MpaRating getFilmById(@PathVariable Long ratingId) {
-        return mpaService.findById(ratingId);
+    public MpaRating getMpaById(@PathVariable Long mpaId) {
+        return mpaService.findById(mpaId);
     }
 }
