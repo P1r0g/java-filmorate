@@ -24,7 +24,7 @@ public class GenresController {
         return genresService.findAll();
     }
 
-    @GetMapping("/{ratingId}")
+    @GetMapping("/{genresId}")
     public Genre getFilmById(@PathVariable Long ratingId) {
         return genresService.findById(ratingId);
     }

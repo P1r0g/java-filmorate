@@ -23,7 +23,7 @@ public class MpaController {
         return mpaService.findAll();
     }
 
-    @GetMapping("/{ratingId}")
+    @GetMapping("/{mpaId}")
     public MpaRating getFilmById(@PathVariable Long ratingId) {
         return mpaService.findById(ratingId);
     }

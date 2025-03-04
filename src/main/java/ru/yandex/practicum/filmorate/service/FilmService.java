@@ -46,9 +46,9 @@ public class FilmService {
                 .toList();
     }
 
-    public Film findById(Long id) {
-        return filmStorage.findById(id)
-                .orElseThrow(() -> new NotFoundException("Фильм с id = " + id + " не найден"));
+    public FilmDto findById(Long id) {
+        return FilmMapper.mapToFilmDto(filmStorage.findById(id)
+                .orElseThrow(() -> new NotFoundException("Фильм с id = " + id + " не найден")));
     }
 
     public FilmDto create(Film film) {
@@ -96,13 +96,13 @@ public class FilmService {
 
     public void addLike(Long filmId, Long userId) {
         User user = userService.findById(userId);
-        Film film = findById(filmId);
+        FilmDto film = findById(filmId);
         filmStorage.addLike(film, user);
     }
 
     public void removeLike(Long filmId, Long userId) {
         User user = userService.findById(userId);
-        Film film = findById(filmId);
+        FilmDto film = findById(filmId);
         filmStorage.removeLike(film, user);
     }
 
