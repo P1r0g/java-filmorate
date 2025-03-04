@@ -1,19 +1,35 @@
 package ru.yandex.practicum.filmorate.model;
 
+import jakarta.validation.constraints.*;
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Set;
 
 @Data
+@Builder
 public class User {
     private Long id;
+
+    @NotNull
+    @NotBlank
+    @Email
     private String email;
+
+    @NotNull
+    @NotBlank
+    @Pattern(regexp = "\\S+", message = "Поле не должно содержать пробелов")
     private String login;
+
     private String name;
-    private boolean friendStatus;
+
+    @Past
+    @NotNull
     private LocalDate birthday;
-    private Set<Long> friends = new HashSet<>();
-    private Set<Long> likedFilms = new HashSet<>();
+
+    private Set<User> friends;
+
+    private Set<Film> likedFilms;
+
 }

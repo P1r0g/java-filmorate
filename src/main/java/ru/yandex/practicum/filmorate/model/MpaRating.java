@@ -1,11 +1,11 @@
 package ru.yandex.practicum.filmorate.model;
 
+import lombok.Builder;
 import lombok.Data;
-import lombok.NonNull;
 
 @Data
-public class MPA {
-    private Integer id;
-    @NonNull
+@Builder
+public class MpaRating {
+    private Long id;
     private String name;
 }

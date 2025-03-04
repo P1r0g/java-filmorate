@@ -1,35 +1,21 @@
-package ru.yandex.practicum.filmorate.model;
+package ru.yandex.practicum.filmorate.dto;
 
-import jakarta.validation.constraints.*;
-import lombok.Builder;
 import lombok.Data;
+import ru.yandex.practicum.filmorate.model.Genre;
+import ru.yandex.practicum.filmorate.model.MpaRating;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Data
-@Builder
-public class Film {
+public class FilmDto {
     private Long id;
-
-    @NotNull
-    @NotBlank
     private String name;
-
-    @Size(max = 200, message = "Описание не должно превышать 200 символов")
     private String description;
-
-    @Past
-    @NotNull
     private LocalDate releaseDate;
-
-    @Positive
     private int duration;
-
     private int likesCount;
-
     private MpaRating mpa;
-
     private List<Genre> genres;
 
     public void addLike() {
